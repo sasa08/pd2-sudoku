@@ -16,7 +16,7 @@ using namespace std;
 			{5,7,1,6,8,4,2,3,9},
 			{9,6,2,3,5,1,7,4,8},
 			{4,3,8,9,2,7,1,5,6}};*/
-int aMap[9][9] = {0};
+int aMap[9][9] ;
 int num[9] = {1,2,3,4,5,6,7,8,9},record[9];
 int oMap[9][9] ={{0,4,0,2,1,0,0,0,0},
 		{8,0,7,0,0,0,0,9,0},
@@ -30,7 +30,9 @@ int oMap[9][9] ={{0,4,0,2,1,0,0,0,0},
 int pMap[9][9];
 int cnt = 0,xi=0,yj=0,cntt = 0;
 int tnum[81][9] = {0};
+int Ans = 0;
 
+Sudoku::Sudoku(){;}
 
 void Sudoku::giveQuestion(){
 	
@@ -41,12 +43,12 @@ void Sudoku::giveQuestion(){
 		}
 		cout << endl;
 	}
-	
 }
 void Sudoku::printOut(){
+	cout << Ans << endl;
 	for(int i = 0 ; i < 9 ; i++){
 		for(int j = 0 ; j < 9 ; j++){
-			cout <<oMap[i][j] << " ";
+			cout <<aMap[i][j] << " ";
 		}
 		cout << endl;
 	}
@@ -64,39 +66,51 @@ bool Sudoku::check(Position p, int n){
 	int gridRow = ( tmpRow / 3 ) * 3;
 	int gridCol = ( tmpCol / 3 ) * 3;
 	for (int i = 0; i < 3; i++) {
-		if (n == oMap[gridRow][i + gridCol] || 
-			n == oMap[gridRow + i][gridCol]) {
-			return false;
+		for(int j = 0 ; j < 3 ; j++){
+			if (n == oMap[gridRow+i][gridCol + j ] || n == oMap[gridRow + i][gridCol + j]) {
+				return false;
+			}
 		}
 	}
 
 	return true;
 }
-bool Sudoku::numTry(sPos & su){
+void Sudoku::numTry(sPos & su){
 	if (su.empty()) {
-		printOut();
-		return true;
+		Ans++;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				aMap[i][j] = oMap[i][j];
+			}
+		}
 	}
 	Position tmp(su.front().row, su.front().col);
 	su.pop_front();
 	for (int i = 1; i <= 9; i++) {
 		if ( check(tmp, i) ) {
 			oMap[tmp.row][tmp.col] = i;	
-			if ( !numTry(su) ) oMap[tmp.row][tmp.col] = 0;	
-			else return true;
+			numTry(su);
+			oMap[tmp.row][tmp.col] = 0;
 		}
 	}		
-
 	su.push_front(tmp);
-	return false;
 }
 void Sudoku::solve(){
+	sPos su;
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			if (0 == oMap[i][j])  su.push_back(Position(i, j));
 		}
 	}
-	numTry(su);
+	if(su.size() < 64){
+		numTry(su);
+		if(Ans == 1) printOut() ;
+		else if (Ans > 1) cout << 2;
+		else cout << 0;
+	}
+	else{
+		cout << 0;
+	}
 }
 
 /*
@@ -390,7 +404,6 @@ void Sudoku::change(){
 	flip(rand()%2);
 }
 void Sudoku::transform(){
-	readIn();
 	change();
 	printOut();
 }

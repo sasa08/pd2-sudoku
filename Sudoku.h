@@ -6,17 +6,15 @@
 using namespace std;
 
 struct Position {
-			Position(int x, int y) : row(x), col(y) {};
-			int row;
-			int col;
+		Position(int x, int y) : row(x), col(y) {};
+		int row;
+		int col;
 		};
 
-		typedef deque <Position> sPos;
-		sPos su;
-		
+typedef deque <Position> sPos;
+
 class Sudoku{
 	public:
-
 		Sudoku();
 		void printOut();
 		void change();
@@ -30,7 +28,7 @@ class Sudoku{
 		void solve();
 		void giveQuestion();
 		bool check(Position p, int n);
-		bool numTry(sPos & su);
+		void numTry(sPos & su);
 		
 
 	private:
