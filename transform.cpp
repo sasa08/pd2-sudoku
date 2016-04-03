@@ -5,5 +5,6 @@ int main(){
 	Sudoku ss;
 	ss.readIn();
 	ss.transform();
+	ss.solve();
 	return 0;
 }
