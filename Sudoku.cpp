@@ -6,8 +6,8 @@
 #include "Sudoku.h"
 using namespace std;
 
-
-/*int oMap[9][9] =	 {{6,4,9,2,1,5,3,8,7},
+/*
+int qMap[9][9] ={{6,4,9,2,1,5,3,8,7},
 			{8,1,7,4,3,6,5,9,2},
 			{2,5,3,8,7,9,4,6,1},
 			{3,8,4,1,6,2,9,7,5},
@@ -15,10 +15,13 @@ using namespace std;
 			{7,2,6,5,9,3,8,1,4},
 			{5,7,1,6,8,4,2,3,9},
 			{9,6,2,3,5,1,7,4,8},
-			{4,3,8,9,2,7,1,5,6}};*/
+			{4,3,8,9,2,7,1,5,6}};
+*/
+
 int aMap[9][9] ;
-int num[9] = {1,2,3,4,5,6,7,8,9},record[9];
-int oMap[9][9] ={{0,4,0,2,1,0,0,0,0},
+int num[9] = {1,2,3,4,5,6,7,8,9};
+int oMap[9][9] =
+		{{0,4,0,2,1,0,0,0,0},
 		{8,0,7,0,0,0,0,9,0},
 		{2,0,0,8,0,0,4,0,1},
 		{3,0,0,0,0,2,9,0,5},
@@ -35,17 +38,33 @@ int Ans = 0;
 Sudoku::Sudoku(){;}
 
 void Sudoku::giveQuestion(){
-	
+	//change();
+	int qMap[9][9] ={{0,4,0,2,1,0,0,0,0},
+		{8,0,7,0,0,0,0,9,0},
+		{2,0,0,8,0,0,4,0,1},
+		{3,0,0,0,0,2,9,0,5},
+		{0,0,5,7,0,8,6,0,0},
+		{7,0,6,5,0,0,0,0,4},
+		{5,0,1,0,0,4,0,0,9},
+		{0,6,0,0,0,0,7,0,8},
+		{0,0,0,0,2,7,0,5,0}};
+
+	for(int i = 0 ; i < 9 ; i++){
+		for(int j = 0 ; j < 9 ; j++){
+			oMap[i][j] = qMap[i][j];
+		}
+	}
 	change();
+	
 	for(int i = 0 ; i < 9 ; i++){
 		for(int j = 0 ; j < 9 ; j++){
 			cout <<oMap[i][j] << " ";
 		}
 		cout << endl;
 	}
+
 }
 void Sudoku::printOut(){
-	cout << Ans << endl;
 	for(int i = 0 ; i < 9 ; i++){
 		for(int j = 0 ; j < 9 ; j++){
 			cout <<aMap[i][j] << " ";
@@ -113,11 +132,16 @@ void Sudoku::solve(){
 			}
 		}
 		Ans++;
+		cout << Ans << endl;
 		printOut() ;
 	}
-	else if(su.size() < 64){
+	else if(su.size() == 81) cout << 2;
+	else if(su.size() < 65){
 		numTry(su);
-		if(Ans == 1) printOut() ;
+		if(Ans == 1) {
+			cout << Ans << endl;
+			printOut() ;
+		}
 		else if (Ans > 1) cout << 2;
 		else cout << 0;
 	}
@@ -371,8 +395,7 @@ void Sudoku::rotate(int n){
 				oMap[i][j] = aMap[i][j];
 			}
 		}
-	}
-	
+	}	
 }
 void Sudoku::flip(int n){
 	if(n == 0){
