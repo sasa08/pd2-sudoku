@@ -102,7 +102,17 @@ void Sudoku::solve(){
 			if (0 == oMap[i][j])  su.push_back(Position(i, j));
 		}
 	}
-	if(su.size() < 64){
+
+	if(su.size() == 0 ) {
+		for(int i = 0 ; i < 9 ; i++){
+			for(int j = 0 ; j < 9 ; j++){
+				aMap[i][j] = oMap[i][j];
+			}
+		}
+		Ans++;
+		printOut() ;
+	}
+	else if(su.size() < 64){
 		numTry(su);
 		if(Ans == 1) printOut() ;
 		else if (Ans > 1) cout << 2;
@@ -290,7 +300,6 @@ void Sudoku::changeNum(int a,int b){
 			oMap[i][j] = aMap[i][j];
 		}
 	}
-
 }
 void Sudoku::changeRow(int a,int b){
 	if(a == 0 && b == 1){
@@ -332,6 +341,7 @@ void Sudoku::changeRow(int a,int b){
 			aMap[2][j] = oMap[2][j];
 		}
 	}
+
 	for(int i = 0 ; i < 9 ; i++){
 		for(int j = 0 ; j < 9 ; j++){
 			oMap[i][j] = aMap[i][j];
@@ -385,19 +395,23 @@ void Sudoku::changeCol(int a,int b){
 	}
 }
 void Sudoku::rotate(int n){
-	if(n > 3) n%=4;
-	for(int t = 0 ; t <= n ; t++){
+	if(n > 3) {
+		n%=4;
+	}
+	
+	for(int t = 0 ; t < n ; t++){
 		for(int i = 0 ; i < 9 ; i++){
 			for(int j = 0 ; j < 9 ; j++){
 				aMap[i][j] = oMap[8-j][i];
 			}
 		}
-	}
-	for(int i = 0 ; i < 9 ; i++){
-		for(int j = 0 ; j < 9 ; j++){
-			oMap[i][j] = aMap[i][j];
+		for(int i = 0 ; i < 9 ; i++){
+			for(int j = 0 ; j < 9 ; j++){
+				oMap[i][j] = aMap[i][j];
+			}
 		}
 	}
+	
 }
 void Sudoku::flip(int n){
 	if(n == 0){
@@ -407,20 +421,14 @@ void Sudoku::flip(int n){
 			}
 		}
 	}
-	else if(n == 1){
+	else{
 		for(int i = 0 ; i < 9 ; i++){
 			for(int j = 0 ; j < 9 ; j++){
 				aMap[i][j] = oMap[i][8-j];
 			}
 		}
 	}
-	else{
-		for(int i = 0 ; i < 9 ; i++){
-			for(int j = 0 ; j < 9 ; j++){
-				aMap[i][j]  = oMap[i][j];
-			}
-		}
-	}
+
 	for(int i = 0 ; i < 9 ; i++){
 		for(int j = 0 ; j < 9 ; j++){
 			oMap[i][j] = aMap[i][j];
